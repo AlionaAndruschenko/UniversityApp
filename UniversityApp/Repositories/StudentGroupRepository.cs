@@ -50,12 +50,13 @@ namespace UniversityApp.Repositories
         public void Add(StudentGroup group)
         {
             using var cmd = new SqlCommand(
-                "INSERT INTO StudentGroup (Name, Department_Id) VALUES (@Name, @Department_Id)",
+                "INSERT INTO StudentGroup (Name, Department_Id,Created_At, Updated_At, Is_Deleted) VALUES (@Name, @Department_Id,@Created_At, @Updated_At, 0)",
                 _connection, _transaction);
 
             cmd.Parameters.AddWithValue("@Name", group.Name);
             cmd.Parameters.AddWithValue("@Department_Id", (object?)group.DepartmentId ?? DBNull.Value);
-
+            cmd.Parameters.AddWithValue("@Created_At", DateTime.Now);
+            cmd.Parameters.AddWithValue("@Updated_At", DateTime.Now);
             cmd.ExecuteNonQuery();
         }
 

@@ -55,13 +55,15 @@ namespace UniversityApp.Repositories
         public void Add(Student student)
         {
             using var cmd = new SqlCommand(
-                "INSERT INTO Student (First_Name, Last_Name, Email, Group_Id) VALUES (@First_Name, @Last_Name, @Email, @Group_Id)",
+                "INSERT INTO Student (First_Name, Last_Name, Email, Group_Id,Enrollment_Date, updated_at, Is_Deleted) VALUES (@First_Name, @Last_Name, @Email, @Group_Id, @EnrollmentDate, @UpdatedAt, 0)",
                 _connection, _transaction);
 
             cmd.Parameters.AddWithValue("@First_Name", student.FirstName);
             cmd.Parameters.AddWithValue("@Last_Name", student.LastName);
             cmd.Parameters.AddWithValue("@Email", (object?)student.Email ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@Group_Id", (object?)student.GroupId ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@EnrollmentDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@UpdatedAt", DateTime.Now);
 
             cmd.ExecuteNonQuery();
         }
